@@ -1,24 +1,24 @@
 const express = require('express');
-const coursesRoutes = require('./src/routes/courses.routes');
-const instructorRoutes = require('./src/routes/instructors.routes');
-const quizzesRoutes = require('./src/routes/quizzes.routes');
-const enrollmentsRoutes = require('./src/routes/enrollments.routes');
-const authsRoutes = require('./src/routes/auth.routes');
-const usersRoutes = require('./src/routes/users.routes');
+const courseRouter = require('./routes/course.routes.js');
+const instructorRouter = require('./routes/instructor.routes.js');
+const userRouter = require('./routes/user.routes.js');
+const enrollmentRouter = require('./routes/enrollment.routes.js');
+const quizRouter = require('./routes/quizz.routes.js');
+
+require('dotenv').config();
 
 const app = express();
 
-//Thiet lap middleware
-app.use(express.json()); //Middleware de phan tich du lieu JSON
+// Middleware to parse JSON bodies
+app.use(express.json());
 
-//Thiet lap router
-app.use('/courses', coursesRoutes);
-app.use('/instructors',instructorRoutes);
-app.use('/quizzes', quizzesRoutes);
-app.use('/enrollments', enrollmentsRoutes);
-app.use('/auth', authsRoutes);
-app.use('/users', usersRoutes);
+//Router
+app.use('/courses', courseRouter);
+app.use('/instructors', instructorRouter);
+app.use('/users', userRouter);
+app.use('/enrollments', enrollmentRouter);
+app.use('/quizzes', quizRouter);
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`Server is running on port ${process.env.PORT || 3000}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port ${process.env.PORT}`);
 });
