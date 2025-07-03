@@ -2,7 +2,7 @@ const instructorModel = require('../models/instructor.model.js');
 
 exports.getAllInstructors = async (req, res) => {
   try {
-    const instructors = await instructorModel.getAllInstructors();
+    const instructors = await instructorModel.getAllInstructor();
     res.status(200).json(instructors);
   } catch (error) {
     res.status(500).json({ message: 'Lay danh sach that bai', error: error.message });
@@ -16,7 +16,7 @@ exports.getInstructorById = async (req, res) => {
     if(!instructor) {
         return res.status(404).json({message: 'Giang vien khong ton tai'});
     }
-    res.status(200).json({message: 'Lay thongtin giang vien thanh cong'});
+    res.status(200).json(instructor);
   } catch (error) {
     res.status(500).json({ message: 'Lay thong tin giang vien that bai', error: error.message });
   }

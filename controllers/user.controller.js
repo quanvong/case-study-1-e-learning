@@ -3,7 +3,9 @@ const userModel = require('../models/user.model.js');
 exports.getAllUsers = async (req, res) => {
     try {
         const users = await userModel.getAllUsers();
-        res.status(200).json(users);
+
+        const userWithoutPassword = users.map(({password, ...user}) => user);
+        res.status(200).json(userWithoutPassword);
     } catch (error) {
         res.status(500).json({ message: "Lấy danh sách người dùng thất bại", error: error.message });
     }
@@ -16,7 +18,8 @@ exports.getUserById = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "Người dùng không tồn tại" });
         }
-        res.status(200).json(user);
+        const {password, ...userWithoutPassword} = user;
+        res.status(200).json(userWithoutPassword);
     } catch (error) {
         res.status(500).json({ message: "Lấy thông tin người dùng thất bại", error: error.message });
     }
@@ -36,9 +39,9 @@ exports.deleteUser = async (req, res) => {
 }
 
 exports.createUser = async (req, res) => {
-    const { username, email, password, role, status } = req.body;
+    const { username, email, password, role} = req.body;
     try {
-        const result = await userModel.createUser({ username, email, password, role, status });
+        const result = await userModel.createUser({ username, email, password, role});
         if (!result) {
             return res.status(400).json({ message: "Người dùng đã tồn tại" });
         }
@@ -50,13 +53,13 @@ exports.createUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
     const id = req.params.id;
-    const { username, email, password, role, status } = req.body;
+    const { username, email, password, role} = req.body;
     try {
-        const result = await userModel.updateUser(id, { username, email, password, role, status });
+        const result = await userModel.updateUser(id, { username, email, password, role,});
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: "Người dùng không tồn tại" });
         }
-        res.status(200).json({ message: "Cập nhật người dùng thành công", user: { id, username, email, role, status } });
+        res.status(200).json({ message: "Cập nhật người dùng thành công", user: { id, username, email, role} });
     } catch (error) {
         res.status(500).json({ message: "Cập nhật người dùng thất bại", error: error.message });
     }

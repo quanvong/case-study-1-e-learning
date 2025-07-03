@@ -21,14 +21,14 @@ exports.deleteUser = async (id) => {
 
 // Create a new user
 exports.createUser = async (data) => {
-    const { username, email, password, role, status } = data;
-    const [result] = await db.execute('INSERT INTO users (username, email, password, role, status) VALUES (?, ?, ?, ?, ?)', [username, email, password, role, status]);
+    const { username, email, password, role} = data;
+    const [result] = await db.execute('INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)', [username, email, password, role]);
     return { id: result.insertId };
 };
 
 // Update user by ID
 exports.updateUser = async (id, data) => {
-    const { username, email, password, role, status } = data;
-    const [result] = await db.execute('UPDATE users SET username = ?, email = ?, password = ?, role = ?, status = ? WHERE id = ?', [username, email, password, role, status, id]);
+    const { username, email, password, role} = data;
+    const [result] = await db.execute('UPDATE users SET username = ?, email = ?, password = ?, role = ? WHERE id = ?', [username, email, password, role, id]);
     return result.affectedRows;
 };
